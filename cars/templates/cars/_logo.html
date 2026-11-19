@@ -1,0 +1,8 @@
+<a class="logo{% if dark %} logo-dark{% endif %}" href="{% url 'home' %}" aria-label="{{ site_name }}">
+  {% if site.logo %}<img src="{{ site.logo.url }}" alt="{{ site_name }}">
+  {% else %}<span class="logo-mark">{% include "cars/_logo_mark.svg" with size=50 uid=uid %}</span>{% endif %}
+  <span class="logo-words">
+    <span class="logo-name">{{ site_name }}</span>
+    <span class="logo-tag">{% if lang == 'ar' %}AUTO SHOWROOM{% else %}معرض سيارات{% endif %}</span>
+  </span>
+</a>

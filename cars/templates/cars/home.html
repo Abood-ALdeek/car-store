@@ -1,0 +1,178 @@
+{% extends "cars/base.html" %}{% load site_tags %}
+{% block content %}
+<section class="hero{% if site.hero_image %} has-image{% endif %}"{% if site.hero_image %} style="--hero-img:url('{{ site.hero_image.url }}')"{% endif %}>
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <span class="eyebrow-pill">{{ t.hero_eyebrow }}</span>
+      <h1>{{ site_slogan }}</h1>
+      <p class="hero-lead">{% tr site "about" as about_text %}{{ about_text|truncatewords:28 }}</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary btn-lg" href="{% url 'car_list' %}">{{ t.hero_browse }} {% icon "arrow" 18 "icon flip" %}</a>
+        <a class="btn btn-ghost btn-lg" href="{% url 'contact' %}">{{ t.hero_contact }}</a>
+      </div>
+      <div class="hero-trust">
+        <span>{% icon "check" 18 %}{{ t.why1_t }}</span>
+        <span>{% icon "check" 18 %}{{ t.why2_t }}</span>
+        <span>{% icon "check" 18 %}{{ t.why4_t }}</span>
+      </div>
+    </div>
+    {% if slides %}
+      <div class="hero-visual" data-slider>
+        <div class="hero-frame">
+          {% for c in slides %}
+            <a class="slide{% if forloop.first %} active{% endif %}" href="{{ c.get_absolute_url }}"
+               data-name="{% tr c.brand 'name' %} {{ c.model_name }} · {{ c.year }}"
+               data-price="{% if c.price %}{{ c.price|num }} {{ currency }}{% else %}{{ t.price_on_request }}{% endif %}"
+               data-cond="{% label 'cond' c.condition %}">
+              <img src="{{ c.main_image.url }}" alt="{{ c }}"{% if not forloop.first %} loading="lazy"{% endif %}>
+            </a>
+          {% endfor %}
+          <span class="slide-badge" data-slide-cond>{% label "cond" hero_car.condition %}</span>
+          {% if slides|length > 1 %}
+            <button type="button" class="slide-arrow prev" data-slide-prev aria-label="{{ t.prev }}">{% icon "arrow" 20 "icon flip-prev" %}</button>
+            <button type="button" class="slide-arrow next" data-slide-next aria-label="{{ t.next }}">{% icon "arrow" 20 "icon flip-next" %}</button>
+            <div class="slide-dots">
+              {% for c in slides %}<button type="button" class="dot{% if forloop.first %} active{% endif %}" data-dot="{{ forloop.counter0 }}" aria-label="{{ forloop.counter }}"></button>{% endfor %}
+            </div>
+            <div class="slide-progress"><span data-slide-bar></span></div>
+          {% endif %}
+        </div>
+        <a class="hero-chip" href="{{ hero_car.get_absolute_url }}" data-chip>
+          <span class="hero-chip-icon">{% icon "car" 22 %}</span>
+          <span class="hero-chip-text">
+            <small data-chip-name>{% tr hero_car.brand "name" %} {{ hero_car.model_name }} · {{ hero_car.year }}</small>
+            <b class="price" data-chip-price>{% if hero_car.price %}{{ hero_car.price|num }} {{ currency }}{% else %}{{ t.price_on_request }}{% endif %}</b>
+          </span>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+  {% if slides %}
+    <div class="hero-bg" aria-hidden="true">
+      {% for c in slides %}<div class="hero-bg-img{% if forloop.first %} active{% endif %}" style="background-image:url('{{ c.main_image.url }}')"></div>{% endfor %}
+    </div>
+  {% endif %}
+</section>
+
+<div class="container search-wrap">
+  <form class="search-panel" action="{% url 'car_list' %}" method="get">
+    <div class="search-tabs" role="radiogroup" aria-label="{{ t.condition }}">
+      <label><input type="radio" name="condition" value="" checked><span>{{ t.all_cars }}</span></label>
+      <label><input type="radio" name="condition" value="new"><span>{{ t.cond_new }}</span></label>
+      <label><input type="radio" name="condition" value="used"><span>{{ t.cond_used }}</span></label>
+    </div>
+    <div class="search-fields">
+      <label class="field field-q"><span>{{ t.search }}</span><input type="search" name="q" placeholder="{{ t.search_ph }}"></label>
+      <label class="field"><span>{{ t.brand }}</span>
+        <select name="brand">
+          <option value="">{{ t.all_brands }}</option>
+          {% for b in brands %}<option value="{{ b.pk }}">{% tr b "name" %}</option>{% endfor %}
+        </select>
+      </label>
+      <label class="field"><span>{{ t.max_price }}</span>
+        <select name="max_price">
+          <option value="">{{ t.any_price }}</option>
+          <option value="10000">10,000 {{ currency }}</option>
+          <option value="15000">15,000 {{ currency }}</option>
+          <option value="20000">20,000 {{ currency }}</option>
+          <option value="30000">30,000 {{ currency }}</option>
+          <option value="40000">40,000 {{ currency }}</option>
+          <option value="60000">60,000 {{ currency }}</option>
+        </select>
+      </label>
+      <label class="field"><span>{{ t.min_year }}</span>
+        <select name="min_year">
+          <option value="">{{ t.any_year }}</option>
+          {% for y in years %}<option value="{{ y }}">{{ y }}</option>{% endfor %}
+        </select>
+      </label>
+      <button class="btn btn-primary" type="submit">{% icon "search" 18 %}{{ t.search }}</button>
+    </div>
+  </form>
+
+  <div class="stats">
+    <div class="stat reveal"><span class="stat-icon">{% icon "car" 24 %}</span><div><b>{{ stats.total }}</b><span>{{ t.stat_cars }}</span></div></div>
+    <div class="stat reveal"><span class="stat-icon">{% icon "key" 24 %}</span><div><b>{{ stats.new }}</b><span>{{ t.stat_new }}</span></div></div>
+    <div class="stat reveal"><span class="stat-icon">{% icon "shield" 24 %}</span><div><b>{{ stats.used }}</b><span>{{ t.stat_used }}</span></div></div>
+    <div class="stat reveal"><span class="stat-icon">{% icon "tag" 24 %}</span><div><b>{{ stats.brands }}</b><span>{{ t.stat_brands }}</span></div></div>
+  </div>
+</div>
+
+{% if featured %}
+<section class="section container">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">{{ t.eyebrow_featured }}</div>
+      <h2>{{ t.featured_cars }}</h2>
+      <p>{{ t.featured_sub }}</p>
+    </div>
+    <a class="link-arrow" href="{% url 'car_list' %}">{{ t.view_all }} {% icon "arrow" 18 "icon flip" %}</a>
+  </div>
+  <div class="car-grid">{% for car in featured %}{% include "cars/_car_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+{% if brands %}
+<section class="section container">
+  <div class="section-head"><div><h2>{{ t.brands_title }}</h2></div></div>
+  <div class="brand-row">
+    {% for b in brands %}<a class="brand-chip" href="{% url 'car_list' %}?brand={{ b.pk }}">{% tr b "name" %}<small>{{ b.n }}</small></a>{% endfor %}
+  </div>
+</section>
+{% endif %}
+
+<section class="section-alt">
+  <div class="container">
+    <div class="section-head center">
+      <div class="eyebrow">{{ t.eyebrow_why }}</div>
+      <h2>{{ t.why_us }}</h2>
+      <p>{{ t.why_sub }}</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature reveal"><div class="feature-icon">{% icon "shield" 28 %}</div><h3>{{ t.why1_t }}</h3><p>{{ t.why1_d }}</p></div>
+      <div class="feature reveal"><div class="feature-icon">{% icon "tag" 28 %}</div><h3>{{ t.why2_t }}</h3><p>{{ t.why2_d }}</p></div>
+      <div class="feature reveal"><div class="feature-icon">{% icon "car" 28 %}</div><h3>{{ t.why3_t }}</h3><p>{{ t.why3_d }}</p></div>
+      <div class="feature reveal"><div class="feature-icon">{% icon "headset" 28 %}</div><h3>{{ t.why4_t }}</h3><p>{{ t.why4_d }}</p></div>
+    </div>
+  </div>
+</section>
+
+{% if latest %}
+<section class="section container">
+  <div class="section-head">
+    <div>
+      <div class="eyebrow">{{ t.eyebrow_latest }}</div>
+      <h2>{{ t.latest_cars }}</h2>
+      <p>{{ t.latest_sub }}</p>
+    </div>
+    <a class="link-arrow" href="{% url 'car_list' %}?sort=new">{{ t.view_all }} {% icon "arrow" 18 "icon flip" %}</a>
+  </div>
+  <div class="car-grid">{% for car in latest %}{% include "cars/_car_card.html" %}{% endfor %}</div>
+</section>
+{% endif %}
+
+<section class="section container">
+  <div class="section-head center">
+    <div class="eyebrow">{{ t.eyebrow_how }}</div>
+    <h2>{{ t.how_title }}</h2>
+  </div>
+  <div class="steps">
+    <div class="step reveal"><div class="step-num">1</div><h3>{{ t.how1_t }}</h3><p>{{ t.how1_d }}</p></div>
+    <div class="step reveal"><div class="step-num">2</div><h3>{{ t.how2_t }}</h3><p>{{ t.how2_d }}</p></div>
+    <div class="step reveal"><div class="step-num">3</div><h3>{{ t.how3_t }}</h3><p>{{ t.how3_d }}</p></div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="cta">
+    <div>
+      <h2>{{ t.cta_title }}</h2>
+      <p>{{ t.cta_text }}</p>
+    </div>
+    <div class="cta-actions">
+      <a class="btn btn-primary btn-lg" href="{% url 'contact' %}">{{ t.hero_contact }}</a>
+      <a class="btn btn-ghost btn-lg" href="tel:{{ site.phone }}">{% icon "phone" 18 %}<span dir="ltr">{{ site.phone }}</span></a>
+    </div>
+  </div>
+</div>
+{% endblock %}

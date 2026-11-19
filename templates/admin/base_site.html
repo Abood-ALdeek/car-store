@@ -1,0 +1,28 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title }}{% endblock %}
+
+{# Light theme only: our colors are designed for it #}
+{% block dark-mode-vars %}{% endblock %}
+
+{% block extrastyle %}{{ block.super }}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{% static 'css/admin.css' %}?v=4">
+<link rel="icon" type="image/svg+xml" href="{% static 'img/logo-mark.svg' %}?v=7">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+  <a href="{% url 'admin:index' %}" class="brand">
+    <img class="brand-logo" src="{% static 'img/logo-mark-light.svg' %}?v=7" alt="" width="54" height="45">
+    <span class="brand-text">{{ site_header }}</span>
+  </a>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block footer %}<div class="admin-footer">{{ site_header }}</div>{% endblock %}

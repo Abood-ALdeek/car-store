@@ -1,0 +1,99 @@
+{% extends "admin/index.html" %}
+{% load site_tags %}
+
+{% block coltype %}colM{% endblock %}
+{% block content_title %}{% endblock %}
+{% block sidebar %}{% endblock %}
+
+{% block content %}
+{% admin_dashboard as d %}
+<div class="dash">
+  <div class="dash-hero">
+    <div>
+      <h1>أهلاً {{ user.get_short_name|default:user.get_username }} 👋</h1>
+      <p>هذه نظرة سريعة على معرضك</p>
+    </div>
+    <div class="dash-actions">
+      <a class="dbtn primary" href="{% url 'admin:cars_car_add' %}">{% icon "car" 18 %} إضافة سيارة</a>
+      <a class="dbtn" href="{% url 'admin:cars_contactmessage_changelist' %}?is_read__exact=0">{% icon "mail" 18 %} الرسائل الجديدة</a>
+      <a class="dbtn" href="/" target="_blank" rel="noopener">{% icon "globe" 18 %} عرض الموقع</a>
+    </div>
+  </div>
+
+  <div class="dash-stats">
+    <a class="stat-card" href="{% url 'admin:cars_car_changelist' %}?is_sold__exact=0">
+      <span class="stat-ic green">{% icon "car" 26 %}</span>
+      <span><b>{{ d.available }}</b><span class="lbl">سيارة متوفرة</span></span>
+    </a>
+    <a class="stat-card" href="{% url 'admin:cars_car_changelist' %}?is_sold__exact=1">
+      <span class="stat-ic blue">{% icon "key" 26 %}</span>
+      <span><b>{{ d.sold }}</b><span class="lbl">سيارة مباعة</span></span>
+    </a>
+    <a class="stat-card" href="{% url 'admin:cars_contactmessage_changelist' %}?is_read__exact=0">
+      <span class="stat-ic red">{% icon "mail" 26 %}</span>
+      <span><b>{{ d.unread }}</b><span class="lbl">رسالة جديدة</span></span>
+    </a>
+    <a class="stat-card" href="{% url 'admin:cars_brand_changelist' %}">
+      <span class="stat-ic amber">{% icon "tag" 26 %}</span>
+      <span><b>{{ d.brands }}</b><span class="lbl">ماركة</span></span>
+    </a>
+  </div>
+
+  <div class="dash-grid">
+    <section class="dash-card">
+      <div class="dash-card-head">
+        <h2>آخر رسائل الزبائن</h2>
+        <a href="{% url 'admin:cars_contactmessage_changelist' %}">عرض الكل ←</a>
+      </div>
+      {% if d.latest_messages %}
+        <ul class="dash-list">
+          {% for m in d.latest_messages %}
+            <li><a class="row" href="{% url 'admin:cars_contactmessage_change' m.pk %}">
+              <span class="avatar">{{ m.name|slice:":1"|upper }}</span>
+              <span class="grow">
+                <span class="t">{{ m.name }} <span class="s" style="display:inline" dir="ltr">· {{ m.phone }}</span></span>
+                <span class="s">{% if m.car %}🚗 {{ m.car }} — {% endif %}{{ m.message|truncatechars:70 }}</span>
+              </span>
+              {% if not m.is_read %}<span class="pill pill-unread">جديدة</span>{% else %}<span class="s">{{ m.created|date:"d/m" }}</span>{% endif %}
+            </a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="dash-empty">لا توجد رسائل بعد</div>
+      {% endif %}
+    </section>
+
+    <section class="dash-card">
+      <div class="dash-card-head">
+        <h2>آخر السيارات المضافة</h2>
+        <a href="{% url 'admin:cars_car_changelist' %}">عرض الكل ←</a>
+      </div>
+      {% if d.latest_cars %}
+        <ul class="dash-list">
+          {% for c in d.latest_cars %}
+            <li><a class="row" href="{% url 'admin:cars_car_change' c.pk %}">
+              {% if c.main_image %}<img class="thumb-img" src="{{ c.main_image.url }}" alt="">{% else %}<span class="avatar">{% icon "car" 18 %}</span>{% endif %}
+              <span class="grow">
+                <span class="t">{{ c.brand.name_ar }} {{ c.model_name }}</span>
+                <span class="s">{{ c.year }} · {{ c.get_condition_display }}{% if c.is_sold %} · مباعة{% endif %}{% if not c.is_published %} · مخفية{% endif %}</span>
+              </span>
+              <span class="price">{% if c.price %}{{ c.price|num }}{% else %}—{% endif %}</span>
+            </a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="dash-empty">لا توجد سيارات بعد</div>
+      {% endif %}
+    </section>
+  </div>
+
+  <h2 class="dash-section-title">إدارة الموقع</h2>
+  <div class="dash-tiles">
+    <a class="tile" href="{% url 'admin:cars_car_changelist' %}"><span class="stat-ic red">{% icon "car" 24 %}</span>السيارات</a>
+    <a class="tile" href="{% url 'admin:cars_brand_changelist' %}"><span class="stat-ic amber">{% icon "tag" 24 %}</span>الماركات</a>
+    <a class="tile" href="{% url 'admin:cars_contactmessage_changelist' %}"><span class="stat-ic blue">{% icon "mail" 24 %}</span>رسائل الزبائن</a>
+    <a class="tile" href="{% url 'admin:cars_sitesettings_change' 1 %}"><span class="stat-ic green">{% icon "sliders" 24 %}</span>إعدادات الموقع</a>
+    {% if perms.auth.view_user %}<a class="tile" href="{% url 'admin:auth_user_changelist' %}"><span class="stat-ic blue">{% icon "key" 24 %}</span>المستخدمون</a>{% endif %}
+  </div>
+</div>
+{% endblock %}

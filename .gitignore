@@ -1,0 +1,21 @@
+# Python / virtual env
+.venv/
+__pycache__/
+*.pyc
+
+# Private data: database (users, passwords, customer messages), uploaded photos, secrets
+db.sqlite3
+db.sqlite3-*
+data/
+media/
+secret_key.txt
+ADMIN-LOGIN.txt
+.env
+
+# Generated / local-only
+staticfiles/
+server.log
+*.pid
+build/
+installer/
+installer-output/

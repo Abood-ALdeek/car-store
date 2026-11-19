@@ -1,0 +1,77 @@
+{% extends "cars/base.html" %}{% load site_tags %}
+{% block title %}{{ t.all_cars }} | {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs"><a href="{% url 'home' %}">{{ t.nav_home }}</a><span class="sep">/</span><span>{{ t.nav_cars }}</span></nav>
+    <h1>{% if f.condition == 'new' %}{{ t.cond_new }}{% elif f.condition == 'used' %}{{ t.cond_used }}{% else %}{{ t.all_cars }}{% endif %}</h1>
+    <p>{{ page_obj.paginator.count }} {{ t.cars_word }}</p>
+  </div>
+</section>
+
+<div class="container list-layout">
+  <details class="filters" open>
+    <summary><span class="ttl">{% icon "sliders" 20 %}{{ t.filters_title }}</span><svg class="chev" width="14" height="14" viewBox="0 0 12 8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 1.5l5 5 5-5"/></svg></summary>
+    <form method="get" class="filter-form">
+      <label>{{ t.search }}
+        <input type="search" name="q" value="{{ f.q }}" placeholder="{{ t.search_ph }}">
+      </label>
+      <fieldset>
+        <legend>{{ t.condition }}</legend>
+        <div class="seg">
+          <label><input type="radio" name="condition" value="" {% if not f.condition %}checked{% endif %}><span>{{ t.all }}</span></label>
+          <label><input type="radio" name="condition" value="new" {% if f.condition == 'new' %}checked{% endif %}><span>{{ t.cond_new }}</span></label>
+          <label><input type="radio" name="condition" value="used" {% if f.condition == 'used' %}checked{% endif %}><span>{{ t.cond_used }}</span></label>
+        </div>
+      </fieldset>
+      <label>{{ t.brand }}
+        <select name="brand">
+          <option value="">{{ t.all_brands }}</option>
+          {% for b in brands %}<option value="{{ b.pk }}" {% if f.brand == b.pk|stringformat:"d" %}selected{% endif %}>{% tr b "name" %}</option>{% endfor %}
+        </select>
+      </label>
+      <label>{{ t.max_price }} ({{ currency }})
+        <input type="number" name="max_price" min="0" step="500" value="{{ f.max_price }}" inputmode="numeric" placeholder="{{ t.any_price }}">
+      </label>
+      <label>{{ t.min_year }}
+        <select name="min_year">
+          <option value="">{{ t.any_year }}</option>
+          {% for y in years %}<option value="{{ y }}" {% if f.min_year == y|stringformat:"d" %}selected{% endif %}>{{ y }}</option>{% endfor %}
+        </select>
+      </label>
+      <div class="filter-actions">
+        <button class="btn btn-primary btn-block" type="submit">{{ t.apply }}</button>
+        {% if filtered %}<a class="btn btn-outline btn-block" href="{% url 'car_list' %}">{{ t.clear }}</a>{% endif %}
+      </div>
+      <input type="hidden" name="sort" value="{{ f.sort }}">
+    </form>
+  </details>
+
+  <div>
+    <form method="get" class="results-bar">
+      <b>{{ page_obj.paginator.count }} {{ t.results }}</b>
+      {% for k, v in f.items %}{% if v and k != 'sort' %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endif %}{% endfor %}
+      <label class="sr-only" for="sort">{{ t.sort }}</label>
+      <select id="sort" name="sort" style="width:auto;min-width:210px" onchange="this.form.submit()">
+        {% for s in sorts %}<option value="{{ s }}" {% if f.sort == s %}selected{% endif %}>{{ t.sort }}: {% label "sort" s %}</option>{% endfor %}
+      </select>
+    </form>
+    {% if page_obj.object_list %}
+      <div class="car-grid">{% for car in page_obj %}{% include "cars/_car_card.html" %}{% endfor %}</div>
+      {% if page_obj.has_other_pages %}
+        <nav class="pager">
+          {% if page_obj.has_previous %}<a class="btn btn-outline btn-sm" href="?{% query page=page_obj.previous_page_number %}">{{ t.prev }}</a>{% endif %}
+          <span>{{ t.page }} {{ page_obj.number }} {{ t.of }} {{ page_obj.paginator.num_pages }}</span>
+          {% if page_obj.has_next %}<a class="btn btn-outline btn-sm" href="?{% query page=page_obj.next_page_number %}">{{ t.next }}</a>{% endif %}
+        </nav>
+      {% endif %}
+    {% else %}
+      <div class="empty">
+        <div class="car-placeholder">{% include "cars/_car_svg.html" %}</div>
+        <p>{{ t.no_results }}</p>
+        <a class="btn btn-outline" href="{% url 'car_list' %}">{{ t.clear }}</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

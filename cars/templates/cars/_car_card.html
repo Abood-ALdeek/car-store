@@ -1,0 +1,27 @@
+{% load site_tags %}<a class="car-card reveal{% if car.is_sold %} is-sold{% endif %}" href="{{ car.get_absolute_url }}">
+  <div class="car-img">
+    {% if car.main_image %}<img src="{{ car.main_image.url }}" alt="{{ car }}" loading="lazy">
+    {% else %}<div class="car-placeholder">{% include "cars/_car_svg.html" %}</div>{% endif %}
+    <div class="car-badges">
+      <span class="badge badge-{{ car.condition }}">{% label "cond" car.condition %}</span>
+      {% if car.is_featured and not car.is_sold %}<span class="badge badge-featured">★ {{ t.featured }}</span>{% endif %}
+    </div>
+    {% with n=car.images.count %}{% if n %}<span class="car-photos">+{{ n }} {{ t.photos }}</span>{% endif %}{% endwith %}
+    {% if car.is_sold %}<div class="sold-ribbon"><span>{{ t.sold }}</span></div>{% endif %}
+  </div>
+  <div class="car-body">
+    <h3 class="car-title">{% tr car.brand "name" %} {{ car.model_name }}</h3>
+    <div class="car-sub">{{ car.year }}{% if car.engine %} · <span dir="ltr">{{ car.engine }}</span>{% endif %}{% if car.color_ar or car.color_en %} · {% tr car "color" %}{% endif %}</div>
+    <div class="car-specs">
+      <span>{% icon "gauge" 18 %}{{ car.mileage|num }} {{ t.km }}</span>
+      <span>{% icon "gear" 18 %}{% label "trans" car.transmission %}</span>
+      <span>{% icon "fuel" 18 %}{% label "fuel" car.fuel %}</span>
+    </div>
+    <div class="car-foot">
+      <div class="car-price">
+        {% if car.price %}{{ car.price|num }} <small>{{ currency }}</small>{% else %}<span class="por">{{ t.price_on_request }}</span>{% endif %}
+      </div>
+      <span class="car-go" aria-hidden="true">{% icon "arrow" 18 "icon flip" %}</span>
+    </div>
+  </div>
+</a>

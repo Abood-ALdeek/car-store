@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" style="color:#ffffff" viewBox="0 0 96 80" width="96" height="80">
+  <defs>
+    <linearGradient id="v3r" x1="0" y1="0" x2=".35" y2="1"><stop offset="0" stop-color="#f43d58"/><stop offset=".5" stop-color="#c8102e"/><stop offset="1" stop-color="#860a1f"/></linearGradient>
+    <linearGradient id="v3c" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset=".55" stop-color="#e3e7ee"/><stop offset="1" stop-color="#a9b2c1"/></linearGradient>
+    <linearGradient id="v3g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity=".85"/></linearGradient>
+    <radialGradient id="v3s" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset="1" stop-color="#000" stop-opacity="0"/></radialGradient>
+  </defs>
+  <!-- bag handle (follows the text color: dark on light backgrounds, white on dark) -->
+  <path d="M22.5 28V19.5a11.5 11.5 0 0 1 23 0V28" fill="none" stroke="currentColor" stroke-width="3.8" stroke-linecap="round"/>
+  <!-- bag -->
+  <path d="M9 23.5h50l-3.4 44.8a6.5 6.5 0 0 1-6.5 6H18.9a6.5 6.5 0 0 1-6.5-6z" fill="url(#v3r)"/>
+  <path d="M9 23.5h50l-.45 5.8H9.45z" fill="#fff" opacity=".18"/>
+  <path d="M47 23.5h12l-3.4 44.8a6.5 6.5 0 0 1-6.5 6H44z" fill="#000" opacity=".13"/>
+  <path d="M14.5 23.5h7.5l-5.2 50.8H13z" fill="#fff" opacity=".08"/>
+  <circle cx="22.5" cy="29" r="2.2" fill="currentColor"/><circle cx="45.5" cy="29" r="2.2" fill="currentColor"/>
+  <path d="M47.6 35l1.1 2.8 2.8 1.1-2.8 1.1-1.1 2.8-1.1-2.8-2.8-1.1 2.8-1.1z" fill="#fff"/>
+  <!-- speed lines -->
+  <path d="M12.5 50.5h13M10.5 55.5h11M13 60.5h9" stroke="url(#v3g)" stroke-width="2" stroke-linecap="round"/>
+  <!-- car -->
+  <ellipse cx="55" cy="70.5" rx="33" ry="3.2" fill="url(#v3s)"/>
+  <path d="M24 62c0-2.4 1.6-4.4 3.9-5l9.8-2.4c4.9-4.9 10.7-8.6 19-9 8.2-.4 14.1 2.2 19.2 7l5.2 1.4c3.1.9 5.4 3.6 5.4 6.8v3.3c0 1-.9 1.9-1.9 1.9H25.9c-1 0-1.9-.9-1.9-1.9z" fill="url(#v3c)" stroke="#0a1020" stroke-width="1.4" stroke-linejoin="round"/>
+  <path d="M43 54.6c3.7-3.4 8-5.5 13.4-5.8v5.8zM59.3 48.8c4.5.2 8 1.8 11.3 5.8H59.3z" fill="#1d2846"/>
+  <path d="M46 53.2c2-1.6 4-2.6 6.5-3" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".55"/>
+  <path d="M27.5 60.2h55" stroke="#c8102e" stroke-width="1.6" stroke-linecap="round"/>
+  <path d="M81.6 57.2l3.8.8" stroke="#ffcf5a" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M25.4 58.6l2.4-.4" stroke="#c8102e" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="35.5" cy="65" r="5.6" fill="#0a1020"/><circle cx="35.5" cy="65" r="3.1" fill="#9aa3b1"/><circle cx="35.5" cy="65" r="1.2" fill="#0a1020"/>
+  <circle cx="72" cy="65" r="5.6" fill="#0a1020"/><circle cx="72" cy="65" r="3.1" fill="#9aa3b1"/><circle cx="72" cy="65" r="1.2" fill="#0a1020"/>
+</svg>

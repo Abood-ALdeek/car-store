@@ -1,0 +1,31 @@
+{% extends "cars/base.html" %}{% load site_tags %}
+{% block title %}{{ t.contact_title }} | {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs"><a href="{% url 'home' %}">{{ t.nav_home }}</a><span class="sep">/</span><span>{{ t.contact_title }}</span></nav>
+    <h1>{{ t.contact_title }}</h1>
+    <p>{{ t.contact_sub }}</p>
+  </div>
+</section>
+<div class="container">
+  <div class="contact-grid">
+    <section class="card-box">
+      <h2>{% icon "mail" 22 %}{{ t.send }}</h2>
+      <p class="muted">{{ t.reply_fast }}</p>
+      {% include "cars/_form.html" %}
+    </section>
+    <aside class="card-box contact-info">
+      <h2>{% icon "pin" 22 %}{{ t.visit_us }}</h2>
+      <div class="info-item"><span class="ic">{% icon "phone" 22 %}</span><div><small>{{ t.phone }}</small><a href="tel:{{ site.phone }}" dir="ltr">{{ site.phone }}</a></div></div>
+      {% if site.whatsapp %}<div class="info-item"><span class="ic">{% icon "phone" 22 %}</span><div><small>{{ t.whatsapp }}</small><a href="https://wa.me/{{ site.whatsapp }}" target="_blank" rel="noopener" dir="ltr">+{{ site.whatsapp }}</a></div></div>{% endif %}
+      {% if site.email %}<div class="info-item"><span class="ic">{% icon "mail" 22 %}</span><div><small>Email</small><a href="mailto:{{ site.email }}">{{ site.email }}</a></div></div>{% endif %}
+      <div class="info-item"><span class="ic">{% icon "pin" 22 %}</span><div><small>{{ t.address }}</small><b>{{ site_address }}</b></div></div>
+      <div class="info-item"><span class="ic">{% icon "clock" 22 %}</span><div><small>{{ t.hours }}</small><b>{{ site_hours }}</b></div></div>
+    </aside>
+  </div>
+  {% if site.map_url %}
+    <iframe class="map" src="{{ site.map_url }}" loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="map"></iframe>
+  {% endif %}
+</div>
+{% endblock %}

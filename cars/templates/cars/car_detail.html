@@ -1,0 +1,96 @@
+{% extends "cars/base.html" %}{% load site_tags %}
+{% block title %}{% tr car.brand "name" %} {{ car.model_name }} {{ car.year }} | {{ site_name }}{% endblock %}
+{% block content %}
+<div class="container detail">
+  <nav class="crumbs dark">
+    <a href="{% url 'home' %}">{{ t.nav_home }}</a><span class="sep">/</span>
+    <a href="{% url 'car_list' %}">{{ t.nav_cars }}</a><span class="sep">/</span>
+    <span>{% tr car.brand "name" %} {{ car.model_name }}</span>
+  </nav>
+
+  <div class="detail-grid">
+    <div class="gallery">
+      <div class="gallery-main">
+        {% if car.main_image %}<img src="{{ car.main_image.url }}" alt="{{ car }}" data-gallery-main>
+        {% elif car.images.all %}<img src="{{ car.images.all.0.image.url }}" alt="{{ car }}" data-gallery-main>
+        {% else %}<div class="car-placeholder big">{% include "cars/_car_svg.html" %}</div>{% endif %}
+        {% if car.is_sold %}<div class="sold-ribbon"><span>{{ t.sold }}</span></div>{% endif %}
+      </div>
+      {% if car.images.all %}
+        <div class="thumbs">
+          {% if car.main_image %}<button type="button" class="thumb active" data-src="{{ car.main_image.url }}"><img src="{{ car.main_image.url }}" alt=""></button>{% endif %}
+          {% for im in car.images.all %}
+            <button type="button" class="thumb{% if not car.main_image and forloop.first %} active{% endif %}" data-src="{{ im.image.url }}"><img src="{{ im.image.url }}" alt="" loading="lazy"></button>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if car.description_ar or car.description_en %}
+        <section class="card-box">
+          <h2>{% icon "list" 22 %}{{ t.description }}</h2>
+          <div class="prose">{% tr car "description" as desc %}{{ desc|linebreaks }}</div>
+        </section>
+      {% endif %}
+    </div>
+
+    <aside class="info">
+      <div class="info-top">
+        <div class="badges">
+          <span class="badge badge-{{ car.condition }}">{% label "cond" car.condition %}</span>
+          {% if car.is_featured %}<span class="badge badge-featured">★ {{ t.featured }}</span>{% endif %}
+          {% if car.is_sold %}<span class="badge badge-soft">{{ t.sold }}</span>{% endif %}
+        </div>
+        <button type="button" class="share-btn" data-share>{% icon "share" 16 %}{{ t.share }}</button>
+      </div>
+      <h1>{% tr car.brand "name" %} {{ car.model_name }}</h1>
+      <div class="car-sub">{{ car.year }}{% if car.engine %} · <span dir="ltr">{{ car.engine }}</span>{% endif %}{% if car.color_ar or car.color_en %} · {% tr car "color" %}{% endif %}</div>
+
+      <div class="price-box">
+        <span>{{ t.price }}</span>
+        <div class="detail-price">{% if car.price %}{{ car.price|num }} <small>{{ currency }}</small>{% else %}<small>{{ t.price_on_request }}</small>{% endif %}</div>
+      </div>
+
+      <dl class="specs">
+        <div>{% icon "calendar" 22 %}<span><dt>{{ t.year }}</dt><dd>{{ car.year }}</dd></span></div>
+        <div>{% icon "gauge" 22 %}<span><dt>{{ t.mileage }}</dt><dd>{{ car.mileage|num }} {{ t.km }}</dd></span></div>
+        <div>{% icon "gear" 22 %}<span><dt>{{ t.transmission }}</dt><dd>{% label "trans" car.transmission %}</dd></span></div>
+        <div>{% icon "fuel" 22 %}<span><dt>{{ t.fuel }}</dt><dd>{% label "fuel" car.fuel %}</dd></span></div>
+        {% if car.engine %}<div>{% icon "engine" 22 %}<span><dt>{{ t.engine }}</dt><dd dir="ltr">{{ car.engine }}</dd></span></div>{% endif %}
+        {% if car.color_ar or car.color_en %}<div>{% icon "palette" 22 %}<span><dt>{{ t.color }}</dt><dd>{% tr car "color" %}</dd></span></div>{% endif %}
+      </dl>
+
+      {% if not car.is_sold %}
+        <div class="contact-btns{% if not site.whatsapp %} single{% endif %}">
+          <a class="btn btn-primary btn-lg" href="tel:{{ site.phone }}">{% icon "phone" 18 %}{{ t.call_us }}</a>
+          {% if site.whatsapp %}
+            <a class="btn btn-wa btn-lg" target="_blank" rel="noopener"
+               href="https://wa.me/{{ site.whatsapp }}?text={{ t.wa_msg|urlq }}%20{{ car|urlq }}%20{{ request.build_absolute_uri|urlq }}">{{ t.whatsapp }}</a>
+          {% endif %}
+          <a class="btn btn-outline btn-lg" href="#ask">{% icon "mail" 18 %}{{ t.ask_about }}</a>
+        </div>
+      {% endif %}
+    </aside>
+  </div>
+
+  <section class="card-box" id="ask">
+    <div class="ask-grid">
+      <div class="ask-side">
+        <div class="eyebrow">{{ t.ask_about }}</div>
+        <h2>{{ t.interested }}</h2>
+        <p>{{ t.interested_sub }}</p>
+        <a class="contact-line" href="tel:{{ site.phone }}"><span class="ic">{% icon "phone" 20 %}</span><span dir="ltr">{{ site.phone }}</span></a>
+        <div class="contact-line"><span class="ic">{% icon "clock" 20 %}</span><span>{{ site_hours }}</span></div>
+      </div>
+      {% include "cars/_form.html" %}
+    </div>
+  </section>
+
+  {% if similar %}
+    <section class="section">
+      <div class="section-head"><div><div class="eyebrow">{{ t.nav_cars }}</div><h2>{{ t.similar }}</h2></div>
+        <a class="link-arrow" href="{% url 'car_list' %}">{{ t.view_all }} {% icon "arrow" 18 "icon flip" %}</a></div>
+      <div class="car-grid">{% for car in similar %}{% include "cars/_car_card.html" %}{% endfor %}</div>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}

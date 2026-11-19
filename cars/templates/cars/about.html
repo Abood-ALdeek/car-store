@@ -1,0 +1,52 @@
+{% extends "cars/base.html" %}{% load site_tags %}
+{% block title %}{{ t.about_title }} | {{ site_name }}{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs"><a href="{% url 'home' %}">{{ t.nav_home }}</a><span class="sep">/</span><span>{{ t.about_title }}</span></nav>
+    <h1>{{ t.about_title }}</h1>
+    <p>{{ site_slogan }}</p>
+  </div>
+</section>
+
+<div class="container">
+  <section class="about-grid">
+    <div class="about-visual reveal">
+      {% if site.hero_image %}<img src="{{ site.hero_image.url }}" alt="{{ site_name }}">
+      {% else %}<div class="car-placeholder">{% include "cars/_car_svg.html" %}</div>{% endif %}
+    </div>
+    <div class="about-text">
+      <div class="eyebrow">{{ t.about_title }}</div>
+      <h2>{{ site_name }}</h2>
+      <div class="prose">{% tr site "about" as about_text %}{{ about_text|linebreaks }}</div>
+      <ul class="checks">
+        <li><span class="ic">{% icon "check" 16 %}</span>{{ t.why1_t }}: {{ t.why1_d }}</li>
+        <li><span class="ic">{% icon "check" 16 %}</span>{{ t.why2_t }}: {{ t.why2_d }}</li>
+        <li><span class="ic">{% icon "check" 16 %}</span>{{ t.why3_t }}: {{ t.why3_d }}</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head center">
+      <div class="eyebrow">{{ t.eyebrow_why }}</div>
+      <h2>{{ t.why_us }}</h2>
+      <p>{{ t.why_sub }}</p>
+    </div>
+    <div class="feature-grid">
+      <div class="feature reveal"><div class="feature-icon">{% icon "shield" 28 %}</div><h3>{{ t.why1_t }}</h3><p>{{ t.why1_d }}</p></div>
+      <div class="feature reveal"><div class="feature-icon">{% icon "tag" 28 %}</div><h3>{{ t.why2_t }}</h3><p>{{ t.why2_d }}</p></div>
+      <div class="feature reveal"><div class="feature-icon">{% icon "car" 28 %}</div><h3>{{ t.why3_t }}</h3><p>{{ t.why3_d }}</p></div>
+      <div class="feature reveal"><div class="feature-icon">{% icon "headset" 28 %}</div><h3>{{ t.why4_t }}</h3><p>{{ t.why4_d }}</p></div>
+    </div>
+  </section>
+
+  <div class="cta">
+    <div><h2>{{ t.cta_title }}</h2><p>{{ t.cta_text }}</p></div>
+    <div class="cta-actions">
+      <a class="btn btn-primary btn-lg" href="{% url 'contact' %}">{{ t.hero_contact }}</a>
+      <a class="btn btn-ghost btn-lg" href="{% url 'car_list' %}">{{ t.hero_browse }}</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
