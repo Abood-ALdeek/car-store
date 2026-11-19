@@ -7,8 +7,7 @@ services:
     # run as the owner of ./data so the site can save photos and the database
     user: "${UID:-1000}:${GID:-1000}"
     ports:
-      - "127.0.0.1:${PORT:-8095}:8000"
-      # also reachable on the home network
-      - "192.168.1.133:${PORT:-8095}:8000"
+      # BIND=127.0.0.1 keeps it private to the machine; 0.0.0.0 opens it to your network
+      - "${BIND:-127.0.0.1}:${PORT:-8095}:8000"
     volumes:
       - ./data:/data
