@@ -19,6 +19,10 @@
   <img alt="RTL" src="https://img.shields.io/badge/Arabic-RTL-c8102e">
 </p>
 
+<p align="center">
+  <img src="docs/screenshots/cover.png" alt="Car Store on desktop and mobile" width="900">
+</p>
+
 ---
 
 ## Screenshots

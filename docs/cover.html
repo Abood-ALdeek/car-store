@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Car Store cover</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800&family=Inter:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1920px; height: 1080px; overflow: hidden; }
+  body {
+    font-family: "Inter", sans-serif; color: #fff; position: relative;
+    background:
+      radial-gradient(900px 600px at 82% 18%, rgba(200,16,46,.38), transparent 60%),
+      radial-gradient(700px 500px at 5% 100%, rgba(36,87,214,.22), transparent 60%),
+      linear-gradient(160deg, #0b1224 0%, #070b16 100%);
+  }
+  body::before {
+    content: ""; position: absolute; inset: 0; opacity: .5;
+    background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(80% 80% at 40% 50%, #000, transparent);
+  }
+  .left { position: absolute; left: 110px; top: 140px; width: 660px; }
+  .brand { display: flex; align-items: center; gap: 22px; margin-bottom: 46px; }
+  .brand img { width: 150px; filter: drop-shadow(0 10px 30px rgba(200,16,46,.45)); }
+  .brand .name { font-weight: 800; font-size: 54px; letter-spacing: 1px; font-style: italic; line-height: 1; }
+  .brand .ar { font-family: "Cairo", sans-serif; font-weight: 700; font-size: 28px; color: #ff6b80; margin-top: 8px; }
+  .pill { display: inline-flex; align-items: center; gap: 10px; padding: 9px 20px; border-radius: 999px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.06); font-weight: 700; font-size: 20px; color: #e5e9f2; margin-bottom: 26px; }
+  .pill::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: #ff3b55; box-shadow: 0 0 0 5px rgba(255,59,85,.25); }
+  h1 { font-size: 60px; line-height: 1.08; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 26px; }
+  h1 span { color: #ff3b55; }
+  .lead { font-size: 25px; line-height: 1.5; color: #b6bfd2; margin-bottom: 40px; }
+  .chips { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 46px; }
+  .chip { display: flex; align-items: center; gap: 12px; font-size: 21px; font-weight: 600; color: #e5e9f2; }
+  .chip i { width: 34px; height: 34px; border-radius: 10px; background: rgba(255,59,85,.15); color: #ff6b80; display: grid; place-items: center; font-style: normal; font-weight: 800; font-size: 18px; }
+  .tech { display: flex; gap: 12px; flex-wrap: wrap; }
+  .tech span { padding: 10px 18px; border-radius: 12px; background: #fff; color: #0a1020; font-weight: 800; font-size: 19px; }
+  .tech span b { color: #c8102e; }
+
+  .browser {
+    position: absolute; left: 880px; top: 120px; width: 960px; border-radius: 22px; overflow: hidden;
+    background: #fff; box-shadow: 0 40px 100px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.08);
+    transform: perspective(2400px) rotateY(-8deg) rotateX(3deg); transform-origin: left center;
+  }
+  .bar { height: 46px; background: #eef1f6; display: flex; align-items: center; gap: 9px; padding: 0 18px; }
+  .bar i { width: 13px; height: 13px; border-radius: 50%; display: block; }
+  .bar .url { margin-left: 20px; flex: 1; height: 28px; border-radius: 8px; background: #fff; color: #64748b; font-size: 15px; font-weight: 600; display: flex; align-items: center; padding: 0 14px; }
+  .browser img { display: block; width: 100%; }
+
+  .phone {
+    position: absolute; left: 840px; top: 430px; width: 290px; height: 590px; border-radius: 46px; padding: 12px;
+    background: #0a0f1d; box-shadow: 0 40px 90px rgba(0,0,0,.65), 0 0 0 2px #2a3550, inset 0 0 0 2px #1a2238;
+    transform: rotate(-4deg);
+  }
+  .phone img { width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: 36px; display: block; }
+  .phone::before { content: ""; position: absolute; top: 22px; left: 50%; width: 92px; height: 24px; margin-left: -46px; border-radius: 20px; background: #0a0f1d; z-index: 2; }
+
+  .foot { position: absolute; left: 110px; bottom: 56px; font-size: 19px; color: #7c88a0; font-weight: 600; }
+  .foot b { color: #fff; }
+</style>
+</head>
+<body>
+  <div class="left">
+    <div class="brand">
+      <img src="../static/img/logo-mark-light.svg" alt="">
+      <div>
+        <div class="name">CAR STORE</div>
+        <div class="ar">معرض السيارات</div>
+      </div>
+    </div>
+    <div class="pill">New &amp; used cars · Arabic / English</div>
+    <h1>A complete website for a <span>car dealership</span></h1>
+    <p class="lead">Browse and filter cars, open a full details page and contact the showroom in one tap. Managed from an Arabic admin panel.</p>
+    <div class="chips">
+      <div class="chip"><i>ع</i>Arabic ⇄ English (RTL)</div>
+      <div class="chip"><i>✓</i>Mobile-first design</div>
+      <div class="chip"><i>☎</i>WhatsApp &amp; call buttons</div>
+      <div class="chip"><i>⚙</i>Custom admin dashboard</div>
+    </div>
+    <div class="tech"><span>Python</span><span>Django</span><span>SQLite</span><span>Docker</span><span>JavaScript</span></div>
+  </div>
+
+  <div class="browser">
+    <div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i><div class="url">car-store · github.com/Abood-ALdeek/car-store</div></div>
+    <img src="screenshots/home-desktop.png" alt="">
+  </div>
+  <div class="phone"><img src="screenshots/home-arabic-mobile.png" alt=""></div>
+
+  <div class="foot">Built by <b>Abood Aldeek</b> · github.com/Abood-ALdeek/car-store</div>
+</body>
+</html>
